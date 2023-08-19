@@ -8,6 +8,7 @@ import (
 	"github.com/nanmu42/etherscan-api"
 	"golang.org/x/crypto/sha3"
 	"log"
+	"time"
 )
 
 func main() {
@@ -37,7 +38,7 @@ func main() {
 		hash.Write(publicKeyBytes[1:])
 		fmt.Println(hexutil.Encode(hash.Sum(nil)[12:]))
 
-		client := etherscan.New(etherscan.Mainnet, "N9D77VUCTPSE98BDSJI1ZMWPK6IGYD41P9")
+		client := etherscan.New(etherscan.Mainnet, "")
 
 		balance, err := client.AccountBalance(address)
 		if err != nil {
@@ -49,6 +50,10 @@ func main() {
 		if balance.Int().Int64() >= 1 {
 
 			break
+
+		} else {
+
+			time.Sleep(time.Second / 5)
 
 		}
 	}
