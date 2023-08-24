@@ -13,6 +13,7 @@ import (
 
 func main() {
 
+	var i = 0
 	for {
 		key, err := crypto.GenerateKey()
 		if err != nil {
@@ -20,7 +21,7 @@ func main() {
 		}
 		privateKeyBytes := crypto.FromECDSA(key)
 
-		fmt.Println(hexutil.Encode(privateKeyBytes)[2:])
+		fmt.Println("Private Key : " + hexutil.Encode(privateKeyBytes)[2:])
 
 		publicKey := key.Public()
 		publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
@@ -29,10 +30,10 @@ func main() {
 		}
 
 		publicKeyBytes := crypto.FromECDSAPub(publicKeyECDSA)
-		fmt.Println(hexutil.Encode(publicKeyBytes)[4:])
+		fmt.Println("Public Key : " + hexutil.Encode(publicKeyBytes)[4:])
 
 		address := crypto.PubkeyToAddress(*publicKeyECDSA).Hex()
-		fmt.Println("address : " + address)
+		fmt.Println("Address : " + address)
 
 		hash := sha3.NewLegacyKeccak256()
 		hash.Write(publicKeyBytes[1:])
@@ -47,13 +48,20 @@ func main() {
 
 		fmt.Println(balance.Int())
 
-		if balance.Int().Int64() >= 1 {
+		if balance.Int().Int64() > 0 {
 
 			break
 
 		} else {
 
 			time.Sleep(time.Second / 5)
+			i++
+
+			if i > 100000 {
+
+				break
+
+			}
 
 		}
 	}
